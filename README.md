@@ -1,0 +1,1 @@
+- Kết nối và khởi tạo dữ liệu cho mongodb: node db.js
