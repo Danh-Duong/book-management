@@ -10,23 +10,52 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'book-management',
-        allowed_formats: ['jpg', 'png', 'jpeg']
     }
 });
 
 const upload = multer({ storage: storage})
 
+// get book page filter
+router.get("/", async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;  
+        const limit = parseInt(req.query.limit) || 10; 
+        const bookId = req.query.bookId;
+        const name = req.query.name;
+        const minPrice = parseFloat(req.query.minPrice) || 0;
+        const maxPrice = parseFloat(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+        const id_category = req.query.id_category;
+        const id_author = req.query.id_author;
+        const isEnable = (req.query.isEnable ?? "true") === "true";
 
-// get all books
-router.get("/", async(req, res)=> {
-    try{
-        const books = await Book.find({ isEnable: true})
-        res.status(200).json(books)
+        const filter = {isEnable}
+        if (bookId) filter.id = bookId;
+        if (name) filter.name = new RegExp(name, 'i');    
+        filter.price = {};
+        filter.price.$gte = minPrice;
+        filter.price.$lte = maxPrice;
+        if (id_category) filter.id_category = id_category;
+        if (id_author) filter.id_author = id_author;
+
+        const skip = (page - 1) * limit;
+        const books = await Book.find(filter) 
+            .skip(skip)
+            .limit(limit);
+
+        const totalBooks = await Book.countDocuments(filter);
+        const totalPages = Math.ceil(totalBooks / limit);
+
+        res.status(200).json({
+            currentPage: page,
+            totalPages: totalPages,
+            totalBooks: totalBooks,
+            books: books
+        });
+    } catch (error) {
+        console.error("Error occurred:", error.stack);
+        res.status(400).json({ message: 'Error fetching books', error });
     }
-    catch (error){
-        res.status(400).json({message: "Error fetching books", error})
-    }
-})
+});
 
 // show form create book
 router.get("/create", (req, res) => res.render(''))
@@ -46,21 +75,6 @@ router.get("update/:id", async(req, res) => {
     }
 })
 
-// get book by id
-router.get('/:id', async (req, res) => {
-    try {
-        const bookId = req.params.id
-        const book = await Book.findOne({ id : bookId, isEnable: true});
-        if (book) {
-            res.status(200).json(book);
-        } else {
-            res.status(404).json({ message: 'Book not found' });
-        }
-    } catch (error) {
-        res.status(400).json({ message: 'Fail to get book', error });
-    }
-});
-
 // create new book
 router.post("/store", upload.single('image'),async(req, res) => {
     try{
@@ -77,7 +91,6 @@ router.post("/store", upload.single('image'),async(req, res) => {
         res.status(400).json({ message: 'Error creating book', error })
     }
 })
-
 
 // update book
 router.put("/save/:id", upload.single('image'),async(req, res) => {
