@@ -1,1 +1,1 @@
-- Kết nối và khởi tạo dữ liệu cho mongodb: node db.js
+- Run application: npm start (tự động kết nối và init data)
