@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs');
 
 mongoose.connect('mongodb://127.0.0.1:27017/book-management', {
     useNewUrlParser: true,
@@ -291,20 +292,21 @@ Author.countDocuments().then(count => {
 });
 
 const userSchema = new mongoose.Schema({
-    name: String,
+    username: String,
     password: String,
 })
 
 const User = mongoose.model("User", userSchema)
 
-User.countDocuments().then(count => {
+User.countDocuments().then(async count => {
     if (count === 0) {
-        User.create([
+        const hashedPassword = await bcrypt.hash("admin", 10);
+        await User.create([
             {
-                name: 'admin',
-                password: 'admin'
+                username: 'admin',
+                password: hashedPassword,
             },
-        ])
+        ]);
     }
 });
 

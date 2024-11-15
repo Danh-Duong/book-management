@@ -4,6 +4,7 @@ const { Book } = require("../db")
 const cloudinary = require("../cloudinary-config")
 const multer = require("multer")
 const { CloudinaryStorage } = require("multer-storage-cloudinary")
+const authenticateToken = require("../authenticateToken")
 
 // config multer storage
 const storage = new CloudinaryStorage({
@@ -56,6 +57,8 @@ router.get("/", async (req, res) => {
         res.status(400).json({ message: 'Error fetching books', error });
     }
 });
+
+router.use(authenticateToken);
 
 // show form create book
 router.get("/create", (req, res) => res.render(''))
