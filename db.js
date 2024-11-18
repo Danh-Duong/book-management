@@ -18,7 +18,7 @@ const bookSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
     id_category: String,
     id_author: String,
-    isEnable: Boolean
+    isEnable: { type: Boolean, default : true}
 })
 
 const Book = mongoose.model("Book", bookSchema)
@@ -177,7 +177,7 @@ const categorySchema = new mongoose.Schema({
     name: String,
     desc: String,
     createdAt: { type: Date, default: Date.now },
-    isEnable: Boolean
+    isEnable: { type: Boolean, default : true}
 })
 
 const Category = mongoose.model("Category", categorySchema)
@@ -230,7 +230,7 @@ const authorSchema = new mongoose.Schema({
     desc: String,
     nationality: String,
     bio: String,
-    isEnable: Boolean
+    isEnable: { type: Boolean, default : true}
 })
 
 const Author = mongoose.model("Author", authorSchema)

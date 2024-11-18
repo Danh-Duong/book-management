@@ -117,13 +117,13 @@ router.put("/save/:id", upload.single('image'),async(req, res) => {
 // delete book
 router.delete("/delete/:id", async (req, res) => {
     try {
-        const updatedBook = await Book.findOneAndUpdate(
+        const deletedBook = await Book.findOneAndUpdate(
             { id: req.params.id },
             { isEnable: false },   
             { new: true }    
         );
 
-        if (!updatedBook) {
+        if (!deletedBook) {
             return res.status(404).send({ message: 'Book not found' });
         }
 
@@ -132,7 +132,7 @@ router.delete("/delete/:id", async (req, res) => {
             updatedBook
         });
     } catch (error) {
-        res.status(400).json({ message: 'Error updating book status', error });
+        res.status(400).json({ message: 'Error deleting book', error });
     }
 });
 
