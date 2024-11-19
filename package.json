@@ -2,8 +2,10 @@
   "name": "book-management",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,6 +16,7 @@
     "jade": "~1.11.0",
     "mongoose": "^8.8.1",
     "morgan": "~1.9.1",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7"
   }
 }

@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -21,14 +22,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.get('/detail-book', (req, res) => {
+  res.render('detail_book');
+});
+app.get('/book-list', (req, res) => {
+  res.render('book_list');
+});
+app.get('/author-list', (req, res) => {
+  res.render('author_list');
+});
+app.get('/login', (req, res) => {
+  res.render('login');
+});
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -39,3 +52,10 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+// Khởi động server
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+  console.log('Server is running on http://localhost:' + port);
+});
+

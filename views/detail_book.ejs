@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>BookSaw - Book Details</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/icomoon/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="/css/vendor.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
+
+    <%- include('./partials/header') %>
+
+        <section id="book-details" class="leaf-pattern-overlay">
+            <div class="corner-pattern-overlay"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+
+                    <!-- Left side: Book Image -->
+                    <div class="col-md-6 mt-5">
+                        <figure class="product-thumb">
+                            <img src="/images/main-banner1.jpg" class="single-image">
+                        </figure>
+                    </div>
+
+                    <!-- Right side: Book Details -->
+                    <div class="col-md-6 ">
+                        <div class="product-entry">
+                            <!-- book detail -->
+                            <div class="row">
+                                <h2 class="section-title divider mt-5">title</h2>
+                                <div class="product-content">
+                                    <p><strong>Description:</strong> description</p>
+                                    <p><strong>Price:</strong> price</p>
+                                    <p><strong>Publisher:</strong> Publisher</p>
+                                    <p><strong>Year of Publication:</strong> YoP</p>
+
+                                    <p><strong>Author:</strong> name</p>
+                                    <p><strong>Category:</strong> category</p>
+                                    <p><strong>Created At:</strong>created at</p>
+                                    <p><strong>Status:</strong>
+                                        <span class="badge bg-success">Available</span>
+                                        <span class="badge bg-warning">out of stock</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Button to Go Back or Purchase -->
+                            <div class="btn-wrap mt-4">
+                                <a href="/" class="btn btn-outline-accent btn-accent-arrow"><i
+                                        class="icon icon-ns-arrow-left"></i>Go Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- sách cùng thể loại -->
+        <section id="special-offer" class="bookshelf ">
+
+            <div class="section-header align-center">
+                <div class="title">
+                    <span>Grab your opportunity</span>
+                </div>
+                <h3 class="section-title">WORKS OF THE SAME GENRE</h2>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="inner-content">
+                        <div class="product-list" data-aos="fade-up">
+                            <div class="grid product-grid">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <img src="images/product-item5.jpg" alt="Books" class="product-item">
+                                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">More
+                                            Detail</button>
+                                    </figure>
+                                    <figcaption>
+                                        <h3>author:Armor Ramsey</h3>
+                                        <span>title:Simple way of piece life</span>
+
+                                </div>
+                                </figcaption>
+
+                                <!-- the second product - item -->
+                            </div>
+                        </div><!--grid-->
+                    </div>
+                </div><!--inner-content-->
+            </div>
+            </div>
+        </section>
+
+        <%- include('./partials/footer') %>
+
+</body>
+
+
+
+</html>
