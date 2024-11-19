@@ -228,6 +228,7 @@ const authorSchema = new mongoose.Schema({
     id: String,
     name: String,
     desc: String,
+    birthDate: { type: Date, default: Date.now },
     nationality: String,
     bio: String,
     isEnable: { type: Boolean, default : true}

@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var bookRouter = require('./routes/book');
 var authRoute = require('./routes/auth');
 var categoryRoute = require('./routes/category');
+var authorRoute = require('./routes/author')
 var dashboardRoute = require('./routes/dashboard')
 
 var app = express();
@@ -23,10 +24,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/books', bookRouter);
-app.use('/categories', categoryRoute);
-app.use('/auth', authRoute);
-app.use("/dashboard", dashboardRoute)
+app.use('/admin/books', bookRouter);
+app.use('/admin/categories', categoryRoute);
+app.use('/admin/auth', authRoute);
+app.use('/admin/author', authorRoute)
+app.use("/admin/dashboard", dashboardRoute)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

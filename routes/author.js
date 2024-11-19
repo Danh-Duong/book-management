@@ -1,11 +1,11 @@
 const express = require("express")
 const router = express.Router()
-const { Category } = require("../db")
+const { Author } = require("../db")
 const authenticateToken = require("../authenticateToken")
 
 router.use(authenticateToken);
 
-// get category page filter
+// get author page filter
 router.get("/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;  
@@ -19,21 +19,21 @@ router.get("/", async (req, res) => {
                 { id: valueSearch },
                 { name: new RegExp(valueSearch, 'i') }
             ];
-        }
+        }   
         
         const skip = (page - 1) * limit;
-        const categories = await Category.find(filter) 
+        const authors = await Author.find(filter) 
             .skip(skip)
             .limit(limit);
 
-        const totalCategorys = await Category.countDocuments(filter);
-        const totalPages = Math.ceil(totalCategorys / limit);
+        const totalAuthors = await Author.countDocuments(filter);
+        const totalPages = Math.ceil(totalAuthors / limit);
 
         res.status(200).json({
             currentPage: page,
             totalPages: totalPages,
-            totalCategorys: totalCategorys,
-            categories: categories
+            totalAuthors: totalAuthors,
+            authors: authors
         });
     } catch (error) {
         console.error("Error occurred:", error.stack);
@@ -41,70 +41,70 @@ router.get("/", async (req, res) => {
     }
 });
 
-// show form create category
+// show form create author
 router.get("/create", (req, res) => res.render(''))
 
-// show form update category
+// show form update author
 router.get("/update/:id", async(req, res) => {
     try{
-        const categoryId = req.params.id
-        const category = await Category.findOne({ id: categoryId , isEnable: true});
-        if (category) {
-            res.status(200).json(category);
+        const authorId = req.params.id
+        const author = await Author.findOne({ id: authorId , isEnable: true});
+        if (author) {
+            res.status(200).json(author);
         } else {
-            res.status(404).json({ message: 'Category not found' });
+            res.status(404).json({ message: 'Author not found' });
         }
     } catch (error) {
-        res.status(400).json({ message: 'Fail to get category', error });
+        res.status(400).json({ message: 'Fail to get author', error });
     }
 })
 
-// create new category
+// create new author
 router.post("/store", async(req, res) => {
     try{
-        const category =  new Category(req.body)
-        const result = await category.save()
+        const author =  new Author(req.body)
+        const result = await author.save()
         res.status(200).json(result);
     }
     catch (error){
-        res.status(400).json({ message: 'Error creating category', error })
+        res.status(400).json({ message: 'Error creating author', error })
     }
 })
 
-// update category
+// update author
 router.put("/save/:id", async(req, res) => {
     try{
-        const updatedCategory = await Category.findOneAndUpdate({id: req.params.id}, req.body, {new : true})
+        const updatedAuthor = await Author.findOneAndUpdate({id: req.params.id}, req.body, {new : true})
 
-        if (!updatedCategory) {
-            return res.status(404).send({ message: 'Category not found' });
+        if (!updatedAuthor) {
+            return res.status(404).send({ message: 'Author not found' });
         }
-        res.status(200).json(updatedCategory);
+        res.status(200).json(updatedAuthor);
     }
     catch (error){
-        res.status(400).json({ message: 'Error updating category', error })
+        res.status(400).json({ message: 'Error updating author', error })
     }
 })
 
-// delete category
+// delete author
 router.delete("/delete/:id", async (req, res) => {
     try {
-        const deletedCategory = await Category.findOneAndUpdate(
+        const deletedAuthor = await Author.findOneAndUpdate(
             { id: req.params.id },
             { isEnable: false },   
             { new: true }    
         );
 
-        if (!deletedCategory) {
-            return res.status(404).send({ message: 'Category not found' });
+        if (!deletedAuthor) {
+            return res.status(404).send({ message: 'Author not found' });
         }
 
         res.status(200).json({
-            message: 'Category marked as disabled (isEnable: false)',
-            deletedCategory
+            message: 'Author marked as disabled (isEnable: false)',
+            deletedAuthor
         });
     } catch (error) {
-        res.status(400).json({ message: 'Error deleting category', error });
+        res.status(400).json({ message: 'Error deleting author', error });
     }
 });
 
