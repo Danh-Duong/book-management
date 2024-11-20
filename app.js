@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
 app.get('/detail-book', (req, res) => {
   res.render('detail_book');
 });
@@ -34,6 +35,28 @@ app.get('/author-list', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login');
 });
+app.get('/admin', (req, res) => {
+  res.render('admin/index_admin');
+});
+
+app.get('/admin/manage-book', (req, res) => {
+  res.render('admin/manage_book');
+});
+app.get('/admin/add-book', (req, res) => {
+  res.render('admin/add_book');
+});
+app.get('/admin/edit-book', (req, res) => {
+  res.render('admin/edit_book');
+});
+
+app.get('/admin/manage-category', (req, res) => {
+  res.render('admin/manage_category');
+});
+app.get('/admin/manage-author', (req, res) => {
+  res.render('admin/manage_author');
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

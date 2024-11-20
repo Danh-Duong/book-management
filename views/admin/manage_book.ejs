@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="/images/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style_admin.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <%- include('./view_base') %>
+            <!-- Content Start -->
+            <div class="content">
+
+                <div class="col-12">
+                    <div class="bg-light d-flex align-items-center justify-content-between p-2">
+                        <div class="ms-3">
+                            <a href="#" class="sidebar-toggler flex-shrink-0 fa-2x">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                            <span class="p-2">Manage book</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Table Start -->
+                <div class="container-fluid pt-4">
+                    <div class="text-end me-4">
+                        <a href="/admin/add-book" class="btn rounded border-danger border-2 text-dark p-2 fs-6">
+                            <i class="fa-solid fa-circle-plus me-2"></i>Add a new book
+                        </a>
+                    </div>
+
+                    <div class="row g-4 ">
+                        <div class="col-12 ">
+                            <div class="row-8 mt-4 ms-4 ">
+
+                                <form action="#" method="get">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control rounded border-2 border-danger"
+                                                name="" required placeholder="Enter...">
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-danger col"><i
+                                                    class="fa-solid fa-magnifying-glass"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="rounded h-100 p-4">
+
+
+
+                                <div class="table-responsive shadow mb-4">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No.</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Author</th>
+                                                <th scope="col">Publisher</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>The Great Gatsby</td>
+                                                <td><img src="/images/product-item1.jpg" width="50px" height="50px">
+                                                </td>
+                                                <td>George Orwell</td>
+                                                <td>The Russian Messenger</td>
+                                                <td>Active</td>
+                                                <td><a href="/admin/edit-book" class="btn btn-primary btn-sm"> <i
+                                                            class="fa-solid fa-pen-to-square"></i> Edit
+                                                    </a> <a href="#" class="btn btn-danger btn-sm"> <i
+                                                            class="fa-solid fa-trash"></i> Delete
+                                                    </a></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table End -->
+
+
+            </div>
+            <!-- Content End -->
+
+
+
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/chart/chart.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
