@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>BookSaw - Free Book Store HTML CSS Template</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/icomoon/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="/css/vendor.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
+
+    <%- include('./partials/header') %>
+        <section id="list-books" class="bookshelf ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="tabs">
+                            <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                            <li data-tab-target="#business" class="tab">Business</li>
+                            <!-- category -->
+                        </ul>
+                        <div class="tab-content">
+                            <div id="all-genre" data-tab-content class="active">
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <img src="images/tab-item1.jpg" alt="Books" class="product-item">
+                                                <button type="button" class="add-to-cart"
+                                                    data-product-tile="add-to-cart">More Detail</button>
+                                            </figure>
+                                            <figcaption>
+                                                <h4>title:Portrait photography</h4>
+                                                <span>author:Adam Silber</span>
+                                                <p>category</p>
+                                            </figcaption>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <img src="images/tab-item1.jpg" alt="Books" class="product-item">
+                                                <button type="button" class="add-to-cart"
+                                                    data-product-tile="add-to-cart">More Detail</button>
+                                            </figure>
+                                            <figcaption>
+                                                <h4>title:Portrait photography</h4>
+                                                <span>author:Adam Silber</span>
+                                                <p>category</p>
+                                                
+                                            </figcaption>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div><!--inner-tabs-->
+
+                </div>
+            </div>
+        </section>
+        <%- include('./partials/footer') %>
+</body>
+
+</html>

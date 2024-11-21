@@ -1,0 +1,1 @@
+- Run application: npm start (tự động kết nối và init data)
