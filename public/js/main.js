@@ -54,16 +54,34 @@
         data: {
             labels: ["cat1", "cat2", "cat3", "cat4", "cat5"],
             datasets: [{
-                label: "Book",
-                data: [5, 10, 7, 8, 2, 9, 11],
+                label: "book",
+                data: [15, 30, 55, 65, 60, 80, 95],
                 backgroundColor: "rgba(0, 156, 255, .7)"
-            },
-            {
-                label: "Author",
-                data: [1, 2, 3, 4, 5, 4, 3],
-                backgroundColor: "#3BDCF5"
             }
             ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // Doughnut Chart
+    var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+    var myChart6 = new Chart(ctx6, {
+        type: "doughnut",
+        data: {
+            labels: ["cat1", "cat2", "cat3", "cat4", "cat5"],
+            datasets: [{
+                backgroundColor: [
+                    "rgba(250, 183, 82)",
+                    "rgba(132, 177, 217, 1)",
+                    "rgba(242, 179, 185)",
+                    "rgba(250, 202, 166)",
+                    "rgba(250, 126, 82)"
+                ],
+
+                data: [55, 49, 44, 24, 15]
+            }]
         },
         options: {
             responsive: true
