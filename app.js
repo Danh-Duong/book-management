@@ -27,43 +27,43 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/admin/books', bookRouter);
 app.use('/admin/categories', categoryRoute);
-app.use('/admin/auth', authRoute);
+app.use('/auth', authRoute);
 app.use('/admin/author', authorRoute)
 app.use("/admin/dashboard", dashboardRoute)
 
 
-app.get('/detail-book', (req, res) => {
-  res.render('detail_book');
-});
-app.get('/book-list', (req, res) => {
-  res.render('book_list');
-});
-app.get('/author-list', (req, res) => {
-  res.render('author_list');
-});
-app.get('/login', (req, res) => {
-  res.render('login');
-});
-app.get('/admin', (req, res) => {
-  res.render('admin/index_admin');
-});
+// app.get('/detail-book', (req, res) => {
+//   res.render('detail_book');
+// });
+// app.get('/book-list', (req, res) => {
+//   res.render('book_list');
+// });
+// app.get('/author-list', (req, res) => {
+//   res.render('author_list');
+// });
+// app.get('/login', (req, res) => {
+//   res.render('login');
+// });
+// app.get('/admin', (req, res) => {
+//   res.render('admin/index_admin');
+// });
 
-app.get('/admin/manage-book', (req, res) => {
-  res.render('admin/manage_book');
-});
-app.get('/admin/add-book', (req, res) => {
-  res.render('admin/add_book');
-});
-app.get('/admin/edit-book', (req, res) => {
-  res.render('admin/edit_book');
-});
+// app.get('/admin/manage-book', (req, res) => {
+//   res.render('admin/manage_book');
+// });
+// app.get('/admin/add-book', (req, res) => {
+//   res.render('admin/add_book');
+// });
+// app.get('/admin/edit-book', (req, res) => {
+//   res.render('admin/edit_book');
+// });
 
-app.get('/admin/manage-category', (req, res) => {
-  res.render('admin/manage_category');
-});
-app.get('/admin/manage-author', (req, res) => {
-  res.render('admin/manage_author');
-});
+// app.get('/admin/manage-category', (req, res) => {
+//   res.render('admin/manage_category');
+// });
+// app.get('/admin/manage-author', (req, res) => {
+//   res.render('admin/manage_author');
+// });
 
 
 

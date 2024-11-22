@@ -4,17 +4,19 @@ const { User } = require("../db")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+router.get("/login", (req, res) => {
+    return res.render("login", {error: null})
+})
 router.post("/login", async(req, res) => {
     const { username, password } = req.body;
-    console.log("Test: " , username)
     const user = await User.findOne({ username: username });
 
     if (!user)
-        return res.status(400).json({ message: 'User not found' });
+        return res.render("login", {error: "Username or pasword is incorrect"})
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-        return res.status(400).json({ message: 'Invalid credentials' });
+        return res.render("login", {error: "Username or pasword is incorrect"})
 
     const token = jwt.sign(
         { username: user.username, id: user._id },
@@ -27,7 +29,7 @@ router.post("/login", async(req, res) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 3600000
     });
-    res.status(200).json({ message: 'Login successful' });
+    return res.redirect("/admin/dashboard")
 })
 
 router.get("/logout", async(req, res) => {
