@@ -28,44 +28,8 @@ app.use('/', indexRouter);
 app.use('/admin/books', bookRouter);
 app.use('/admin/categories', categoryRoute);
 app.use('/auth', authRoute);
-app.use('/admin/author', authorRoute)
+app.use('/admin/authors', authorRoute)
 app.use("/admin/dashboard", dashboardRoute)
-
-
-// app.get('/detail-book', (req, res) => {
-//   res.render('detail_book');
-// });
-// app.get('/book-list', (req, res) => {
-//   res.render('book_list');
-// });
-// app.get('/author-list', (req, res) => {
-//   res.render('author_list');
-// });
-// app.get('/login', (req, res) => {
-//   res.render('login');
-// });
-// app.get('/admin', (req, res) => {
-//   res.render('admin/index_admin');
-// });
-
-// app.get('/admin/manage-book', (req, res) => {
-//   res.render('admin/manage_book');
-// });
-// app.get('/admin/add-book', (req, res) => {
-//   res.render('admin/add_book');
-// });
-// app.get('/admin/edit-book', (req, res) => {
-//   res.render('admin/edit_book');
-// });
-
-// app.get('/admin/manage-category', (req, res) => {
-//   res.render('admin/manage_category');
-// });
-// app.get('/admin/manage-author', (req, res) => {
-//   res.render('admin/manage_author');
-// });
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -75,12 +39,16 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
+  console.error(err.stack)
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // res.status(err.status || 500);
+  // res.render('error');
+  res.status(500).json({
+    error: err.stack
+  });
 });
 
 module.exports = app;

@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const { Category } = require("../db")
 const authenticateToken = require("../authenticateToken")
+const { formatDateToDDMMYYYY } = require("../utils/Utils");
 
 router.use(authenticateToken);
 
@@ -9,7 +10,7 @@ router.use(authenticateToken);
 router.get("/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;  
-        const limit = parseInt(req.query.limit) || 5; 
+        const limit = parseInt(req.query.limit) || 999999; 
         const valueSearch = req.query.valueSearch;
         const isEnable = (req.query.isEnable ?? "true") === "true";
 
@@ -26,23 +27,37 @@ router.get("/", async (req, res) => {
             .skip(skip)
             .limit(limit);
 
+        const formattedCategories = categories.map(category => {
+            const categoryObj = category.toObject();
+            categoryObj.createdAt = formatDateToDDMMYYYY(categoryObj.createdAt);
+            return categoryObj;
+        });
+            
+
         const totalCategorys = await Category.countDocuments(filter);
         const totalPages = Math.ceil(totalCategorys / limit);
 
-        res.status(200).json({
+        res.render("admin/manage_category",{
             currentPage: page,
             totalPages: totalPages,
-            totalCategorys: totalCategorys,
-            categories: categories
-        });
+            totalItems: totalCategorys,
+            categories: formattedCategories,
+            valueSearch: valueSearch,
+            error: null
+        })
     } catch (error) {
         console.error("Error occurred:", error.stack);
         res.status(400).json({ message: 'Error fetching books', error });
     }
 });
 
-// show form create category
-router.get("/create", (req, res) => res.render(''))
+router.get("/create", (req, res) =>{
+    res.render("admin/save_category",{error: null, action: "add", data: {
+        id: "",
+        name: "",
+        desc: "",
+    }})
+})
 
 // show form update category
 router.get("/update/:id", async(req, res) => {
@@ -50,10 +65,12 @@ router.get("/update/:id", async(req, res) => {
         const categoryId = req.params.id
         const category = await Category.findOne({ id: categoryId , isEnable: true});
         if (category) {
-            res.status(200).json(category);
-        } else {
-            res.status(404).json({ message: 'Category not found' });
-        }
+            res.render("admin/save_category",{error: null,action: '', data: {
+                id: category.id,
+                name: category.name,
+                desc: category.desc,
+            }})
+        } 
     } catch (error) {
         res.status(400).json({ message: 'Fail to get category', error });
     }
@@ -61,10 +78,18 @@ router.get("/update/:id", async(req, res) => {
 
 // create new category
 router.post("/store", async(req, res) => {
-    try{
+    try{    
+        const existedCate = await Category.findOne({id: req.body.id})
+        if (existedCate){
+            return res.render("admin/save_category", {
+                error: "ID đã tồn tại. Vui lòng sử dụng ID khác!",
+                data: req.body,
+                action: 'add',
+            })
+        }
         const category =  new Category(req.body)
-        const result = await category.save()
-        res.status(200).json(result);
+        await category.save()
+        return res.redirect("/admin/categories")
     }
     catch (error){
         res.status(400).json({ message: 'Error creating category', error })
@@ -72,14 +97,13 @@ router.post("/store", async(req, res) => {
 })
 
 // update category
-router.put("/save/:id", async(req, res) => {
+router.post("/save/:id", async(req, res) => {
     try{
         const updatedCategory = await Category.findOneAndUpdate({id: req.params.id}, req.body, {new : true})
-
         if (!updatedCategory) {
-            return res.status(404).send({ message: 'Category not found' });
+            return res.render("admin/manage_category", {error: "Không thể cập nhập Category"})
         }
-        res.status(200).json(updatedCategory);
+        return res.redirect("/admin/categories")
     }
     catch (error){
         res.status(400).json({ message: 'Error updating category', error })
@@ -87,7 +111,7 @@ router.put("/save/:id", async(req, res) => {
 })
 
 // delete category
-router.delete("/delete/:id", async (req, res) => {
+router.get("/delete/:id", async (req, res) => {
     try {
         const deletedCategory = await Category.findOneAndUpdate(
             { id: req.params.id },
@@ -96,13 +120,11 @@ router.delete("/delete/:id", async (req, res) => {
         );
 
         if (!deletedCategory) {
-            return res.status(404).send({ message: 'Category not found' });
+            return res.render("admin/manage_category", {error: "Không thể xóa Category"})
         }
 
-        res.status(200).json({
-            message: 'Category marked as disabled (isEnable: false)',
-            deletedCategory
-        });
+        return res.redirect("/admin/categories")
+
     } catch (error) {
         res.status(400).json({ message: 'Error deleting category', error });
     }

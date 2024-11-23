@@ -29,6 +29,15 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style_admin.css" rel="stylesheet">
+    <style>
+        .active{
+            background-color: #3d8b71;
+            border-radius: 8px;
+            color: white;
+            padding: 2px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,7 +46,6 @@
         <%- include('./view_base') %>
             <!-- Content Start -->
             <div class="content">
-
                 <div class="col-12">
                     <div class="bg-light d-flex align-items-center justify-content-between p-2">
                         <div class="ms-3">
@@ -49,99 +57,39 @@
                     </div>
                 </div>
 
-
-
                 <!-- Table Start -->
                 <div class="container-fluid pt-4">
                     <div class="text-end me-4">
-                        <button class="text-dark rounded border-success p-2 fs-6" data-bs-toggle="modal"
-                            data-bs-target="#addAuthorModal">
-                            <i class="fa-solid fa-circle-plus me-2"></i>Add a new category
+                        <button class="text-dark rounded border-success p-2 fs-6" data-bs-toggle="modal" onclick="window.location.href='categories/create';">
+                            <i class="fa-solid fa-circle-plus me-2"></i>Add new category
                         </button>
                     </div>
-                    <div class="modal fade" id="addAuthorModal" tabindex="-1" aria-labelledby="addAuthorModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addAuthorModalLabel">Add a New Category</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="#" method="">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="floatingInput"
-                                                placeholder="Name" name="name">
-                                            <label for="floatingInput">Name</label>
-                                        </div>
-
-
-                                        <div class="form-floating mb-3">
-                                            <textarea type="text" class="form-control" rows="3" id="floatingInput"
-                                                placeholder="Description" name="desc"></textarea>
-                                            <label for="floatingInput">Description</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="floatingInput"
-                                                placeholder="Date" name="createdAt">
-                                            <label for="floatingInput">Create at</label>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="col-6">
-                                                <div class="form-check">
-                                                    <input class="form-check-input " type="radio" name="isEnable"
-                                                        id="gridRadios1" value="option1" checked>
-                                                    <label class="form-check-label" for="gridRadios1">
-                                                        Active
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="isEnable"
-                                                        id="gridRadios2" value="option2">
-                                                    <label class="form-check-label" for="gridRadios2">
-                                                        Inactive
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-
-                                            <button type="button" class="bg-success w-100 text-white">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
+                    
                     <div class="row g-4 ">
                         <div class="col-12 ">
                             <div class="row-8 mt-4 ms-4 ">
 
                                 <form action="#" method="get">
-                                    <div class="row">
-                                        <div class="col">
-                                            <input type="text" class="form-control rounded border-2 border-success"
-                                                name="" required placeholder="Enter...">
-                                        </div>
-                                        <div class="col">
-                                            <button class="btn btn-success col"><i
+                                    <div>
+                                        <div class="d-flex" style="width: 400px;">
+                                            <form id="search-form" method="get" action="/auth/categories">
+                                                <input type="text" id="search-input" class="form-control rounded border-2 border-success"
+                                                name="valueSearch" placeholder="Enter id/ name..." value="<%= valueSearch %>"
+                                                style="margin-right: 10px;">
+                                                <button type="submit" class="btn btn-success col"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
+                                            </form>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                             <div class="rounded h-100 p-4">
-
-
-
                                 <div class="table-responsive shadow mb-4">
                                     <table class="table text-center">
                                         <thead>
                                             <tr>
                                                 <th scope="col">No.</th>
+                                                <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Create at</th>
@@ -150,83 +98,29 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Classic Literature</td>
-
-                                                <td>Books that have stood the test of time.</td>
-                                                <td>17/10/2024</td>
-                                                <td>Active</td>
-                                                <td><a href="" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#editAuthorModal"> <i
-                                                            class="fa-solid fa-pen-to-square"></i>
-                                                    </a> <a href="#" class="btn btn-danger btn-sm"> <i
-                                                            class="fa-solid fa-trash"></i> 
-                                                    </a></td>
-                                            </tr>
-
+                                            <% categories.forEach(function(item, index) { %>
+                                                <tr>
+                                                    <th scope="row"><%= index + 1 %></th> <!-- Hiển thị số thứ tự (STT) -->
+                                                    <td><%= item.id %></td>   
+                                                    <td><%= item.name %></td>   
+                                                    <td><%= item.desc %></td>
+                                                    <td><%= item.createdAt %></td>
+                                                    <td><p class="active">Active</p></td>
+                                                    <td><a href="categories/update/<%= item.id %>" class="btn btn-primary btn-sm"> <i
+                                                                class="fa-solid fa-pen-to-square"></i>
+                                                        </a> <a href="categories/delete/<%= item.id %>" class="btn btn-danger btn-sm"
+                                                            onclick="return confirmDelete(event, '<%= item.id %>')"> <i
+                                                                class="fa-solid fa-trash"></i> 
+                                                        </a></td>
+                                                </tr>
+                                            <% }); %> 
+                                
                                         </tbody>
+
                                     </table>
-                                    <div class="modal fade" id="editAuthorModal" tabindex="-1"
-                                        aria-labelledby="editAuthorModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editAuthorModalLabel">Edit Category
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="#" method="">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="floatingInput"
-                                                                placeholder="Name" name="name" value="hehehehe">
-                                                            <label for="floatingInput">Name</label>
-                                                        </div>
-
-
-                                                        <div class="form-floating mb-3">
-                                                            <textarea type="text" class="form-control" rows="3"
-                                                                id="floatingInput" placeholder="Description"
-                                                                name="desc">hehehe</textarea>
-                                                            <label for="floatingInput">Description</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="floatingInput"
-                                                                placeholder="Date" name="createdAt" value="17/10/2024">
-                                                            <label for="floatingInput">Create at</label>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <div class="col-6">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input " type="radio"
-                                                                        name="isEnable" id="gridRadios1" value="option1"
-                                                                        checked>
-                                                                    <label class="form-check-label" for="gridRadios1">
-                                                                        Active
-                                                                    </label>
-                                                                </div>
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="isEnable" id="gridRadios2"
-                                                                        value="option2">
-                                                                    <label class="form-check-label" for="gridRadios2">
-                                                                        Inactive
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-
-                                                            <button type="button" class="bg-success w-100 text-white">Save</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <% if(categories.length===0) {%>
+                                        <p class="text-center" style="font-size: 20px; font-weight: 700;">No Categories Found</p>
+                                    <%}%>
                                 </div>
 
                             </div>
@@ -234,14 +128,31 @@
                     </div>
                 </div>
                 <!-- Table End -->
-
-
             </div>
             <!-- Content End -->
-
-
-
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(event, id) {
+            event.preventDefault();
+            
+            Swal.fire({
+                title: 'Xóa danh mục',
+                text: "Bạn có chắc chắn xóa danh mục này không?",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `categories/delete/${id}`;
+                }
+            });
+        }
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -253,7 +164,6 @@
     <script src="/lib/tempusdominus/js/moment.min.js"></script>
     <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
 </body>
