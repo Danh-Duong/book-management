@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const { Author } = require("../db")
 const authenticateToken = require("../authenticateToken")
+const { formatDateToDDMMYYYY } = require("../utils/Utils");
 
 router.use(authenticateToken);
 
@@ -26,34 +27,54 @@ router.get("/", async (req, res) => {
             .skip(skip)
             .limit(limit);
 
+        const formattedAuthors = authors.map(author => {
+            const authorObj = author.toObject();
+            authorObj.birthDate = formatDateToDDMMYYYY(authorObj.birthDate);
+            return authorObj;
+        });
+
         const totalAuthors = await Author.countDocuments(filter);
         const totalPages = Math.ceil(totalAuthors / limit);
 
-        res.status(200).json({
+        res.render("admin/manage_author",{
             currentPage: page,
             totalPages: totalPages,
-            totalAuthors: totalAuthors,
-            authors: authors
-        });
+            totalItems: totalAuthors,
+            authors: formattedAuthors,
+            valueSearch: valueSearch,
+            error: null
+        })
     } catch (error) {
         console.error("Error occurred:", error.stack);
-        res.status(400).json({ message: 'Error fetching books', error });
     }
 });
 
 // show form create author
-router.get("/create", (req, res) => res.render(''))
+router.get("/create", (req, res) => {
+    res.render('admin/save_author',{action: "add", error: null, data: {
+        id: "",
+        name: "",
+        desc: "",
+        birthDate: "",
+        nationality: "",
+        bio: ""
+    }})
+})
 
 // show form update author
 router.get("/update/:id", async(req, res) => {
     try{
         const authorId = req.params.id
         const author = await Author.findOne({ id: authorId , isEnable: true});
-        if (author) {
-            res.status(200).json(author);
-        } else {
-            res.status(404).json({ message: 'Author not found' });
-        }
+
+        const formattedAuthor = {
+            ...author.toObject(),
+            birthDate: author.birthDate.toISOString().split('T')[0],
+        };
+
+        if (author)
+            res.render("admin/save_author",{action: '', error: null, data: formattedAuthor})
+        
     } catch (error) {
         res.status(400).json({ message: 'Fail to get author', error });
     }
@@ -62,9 +83,18 @@ router.get("/update/:id", async(req, res) => {
 // create new author
 router.post("/store", async(req, res) => {
     try{
+        const existedAuthor = await Author.findOne({id: req.body.id})
+        if (existedAuthor){
+            return res.render("admin/save_author", {
+                error: "ID đã tồn tại. Vui lòng sử dụng ID khác!",
+                data: req.body,
+                action: 'add',
+            })
+        }
+
         const author =  new Author(req.body)
-        const result = await author.save()
-        res.status(200).json(result);
+        await author.save()
+        return res.redirect("/admin/authors")
     }
     catch (error){
         res.status(400).json({ message: 'Error creating author', error })
@@ -72,14 +102,14 @@ router.post("/store", async(req, res) => {
 })
 
 // update author
-router.put("/save/:id", async(req, res) => {
+router.post("/save/:id", async(req, res) => {
     try{
         const updatedAuthor = await Author.findOneAndUpdate({id: req.params.id}, req.body, {new : true})
 
         if (!updatedAuthor) {
-            return res.status(404).send({ message: 'Author not found' });
+            return res.render("admin/manage_author", {error: "Không thể cập nhập Category"})
         }
-        res.status(200).json(updatedAuthor);
+        return res.redirect("/admin/authors")
     }
     catch (error){
         res.status(400).json({ message: 'Error updating author', error })
@@ -87,7 +117,7 @@ router.put("/save/:id", async(req, res) => {
 })
 
 // delete author
-router.delete("/delete/:id", async (req, res) => {
+router.get("/delete/:id", async (req, res) => {
     try {
         const deletedAuthor = await Author.findOneAndUpdate(
             { id: req.params.id },
@@ -96,13 +126,10 @@ router.delete("/delete/:id", async (req, res) => {
         );
 
         if (!deletedAuthor) {
-            return res.status(404).send({ message: 'Author not found' });
+            return res.render("admin/manage_author", {error: "Không thể xóa author này!"})
         }
 
-        res.status(200).json({
-            message: 'Author marked as disabled (isEnable: false)',
-            deletedAuthor
-        });
+        return res.redirect("/admin/authors")
     } catch (error) {
         res.status(400).json({ message: 'Error deleting author', error });
     }
