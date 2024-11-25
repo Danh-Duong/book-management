@@ -19,7 +19,18 @@
     <link rel="stylesheet" type="text/css" href="icomoon/icomoon.css">
     <link rel="stylesheet" type="text/css" href="css/vendor.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-
+    <script src="https://kit.fontawesome.com/e3729928c9.js" crossorigin="anonymous"></script>
+    <style>
+        .user-account a{
+            border: 2px solid rgb(143, 143, 143);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-account a:hover{
+            background-color: rgb(143, 143, 143);
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,12 +58,8 @@
                     <div class="col-md-6">
                         <div class="right-element">
                             <div class="user-account">
-                                <a class="user-account for-buy"><i class="icon icon-user"></i><span>Account</span></a>
-                                <div class="dropdown-menu">
-                                    <a href="/auth/login">Login</a>
-                                    <a href="#">Register</a>
-                                </div>
-
+                                <a href="/auth/login">
+                                    <i class="fa-solid fa-right-to-bracket px-2"></i>Login</a>
                             </div>
 
 
@@ -87,20 +94,6 @@
                                 <ul class="menu-list">
                                     <li class="menu-item active"><a href="/">Home</a></li>
                                     <li class="menu-item"><a href="/book-list" class="nav-link">Books</a></li>
-                                    <li class="menu-item"><a href="/author-list" class="nav-link">Author</a></li>
-                                    <li class="menu-item has-sub">
-                                        <a href="#pages" class="nav-link">Pages</a>
-                                        <ul>
-                                            <li class="menu-item"><a href="/#featured-books"
-                                                    class="nav-link">Featured</a></li>
-                                            <li class="menu-item"><a href="/#popular-books" class="nav-link">Popular</a>
-                                            </li>
-                                            <li class="menu-item"><a href="/#special-offer" class="nav-link">Author &
-                                                    Work</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item"><a href="/#download-app" class="nav-link">Download App</a>
-                                    </li>
                                 </ul>
                                 <div class="hamburger">
                                     <span class="bar"></span>

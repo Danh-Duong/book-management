@@ -51,60 +51,58 @@
 
                 <!-- Sale & Revenue End -->
 
-                <div class="container-fluid pt-4 mt-4 mb-5">
+                <div class="container-fluid pt-4 mt-4 mb-1">
 
-                    <div class="row">
-                        <div class="col-5 align-items-center h-100 me-4 ms-3">
-                            <div class="row mb-4">
+                    <div class="row justify-content-between px-3">
+                            <div class="col-lg-4 row mb-4">
                                 <div class="bg-white shadow rounded p-2 d-flex justify-content-between p-4">
                                     <i class="fa fa-th me-2 fa-3x text-success"></i>
                                     <div class="m-auto">
                                         <h6 class="m-auto pb-2 fs-5">Category</h6>
-                                        <h6 class="mb-0 ">20</h6>
+                                        <h6 class="mb-0 "><%= numCategory %></h6>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="row mb-4">
+                            <div class="col-lg-4 row mb-4">
                                 <div class="bg-white shadow rounded p-2 d-flex justify-content-between p-4">
                                     <i class="fa-solid fa-book fa-3x text-danger"></i>
                                     <div class="m-auto">
                                         <h6 class="m-auto pb-2 fs-5">Books</h6>
-                                        <h6 class="mb-0 ">20</h6>
+                                        <h6 class="mb-0 "><%= numBook %></h6>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="row mb-4">
+                            <div class="col-lg-4 row mb-4">
                                 <div class="bg-white shadow rounded p-2 d-flex justify-content-between p-4">
                                     <i class="fa-solid fa-user fa-3x text-warning"></i>
                                     <div class="m-auto">
                                         <h6 class="m-auto pb-2 fs-5">Authors</h6>
-                                        <h6 class="mb-0 ">20</h6>
+                                        <h6 class="mb-0 "><%= numAuthor %></h6>
                                     </div>
                                 </div>
 
                             </div>
-                        </div>
-                        <div class="col-6 ">
-
-                            <div class="bg-light rounded p-4 chart-container">
-                                <h6 class="mb-4">Doughnut chart</h6>
-                                <canvas id="doughnut-chart" class="chart-canvas"></canvas>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
-                <!-- Sales Chart Start -->
-                <div class="container-fluid pt-4 mt-4 mb-5">
+                
 
+                <!-- Sales Chart Start -->
+                <div class="container-fluid mb-5">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-8">
                             <div class="bg-light text-center rounded p-4 h-100 chart-container">
-                                <h6 class="mb-4">Correlation chart show number of books</h6>
+                                <h6 class="mb-4">Number Books By Quarter</h6>
                                 <canvas id="worldwide-sales" class="chart-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="bg-light rounded p-4 chart-container">
+                                <h6 class="mb-4">Number Books By Category</h6>
+                                <canvas id="doughnut-chart" class="chart-canvas"></canvas>
                             </div>
                         </div>
 
@@ -131,6 +129,58 @@
             <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
+    <script>
+
+        const dataBookQuarterly = <%- JSON.stringify(dataBookQuarterly) %>;
+        const labels = dataBookQuarterly.map(item => item._id);
+        const data = dataBookQuarterly.map(item => item.totalBooks);
+
+        var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
+        var myChart1 = new Chart(ctx1, {
+            type: "bar",
+            data: {
+                labels: labels, 
+                datasets: [{
+                    label: "Total Books", 
+                    data: data, 
+                    backgroundColor: "rgba(0, 156, 255, .7)"
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        const dataCategoryYear = <%- JSON.stringify(dataCategoryYear) %>;
+        const categoryLabels = dataCategoryYear.map(item => item.categoryName);
+        const categoryData = dataCategoryYear.map(item => item.totalBooks); 
+
+        function getRandomColor() {
+            return `rgba(${Math.floor(Math.random() * 255)}, 
+                        ${Math.floor(Math.random() * 255)}, 
+                        ${Math.floor(Math.random() * 255)}, 0.7)`;
+        }
+
+        const backgroundColors = Array(categoryLabels.length)
+            .fill()
+            .map(() => getRandomColor());
+
+        // Tạo biểu đồ Doughnut
+        var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+        var myChart6 = new Chart(ctx6, {
+            type: "doughnut",
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    backgroundColor: backgroundColors,
+                    data: categoryData
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

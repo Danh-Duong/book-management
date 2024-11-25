@@ -60,11 +60,11 @@ router.get("/", async (req, res) => {
                     quarter: {
                         $switch: {
                             branches: [
-                                { case: { $lte: [{ $month: "$createdAt" }, 3] }, then: "Q1" },
-                                { case: { $lte: [{ $month: "$createdAt" }, 6] }, then: "Q2" },
-                                { case: { $lte: [{ $month: "$createdAt" }, 9] }, then: "Q3" }
+                                { case: { $lte: [{ $month: "$createdAt" }, 3] }, then: "Quý 1" },
+                                { case: { $lte: [{ $month: "$createdAt" }, 6] }, then: "Quý 2" },
+                                { case: { $lte: [{ $month: "$createdAt" }, 9] }, then: "Quý 3" }
                             ],
-                            default: "Q4"
+                            default: "Quý 4"
                         }
                     }
                 }
@@ -80,18 +80,16 @@ router.get("/", async (req, res) => {
             }
         ]);
 
-        res.status(200).json({
+        res.render("admin/index_admin", {
             numAuthor: numAuthor, 
             numBook: numBook,
             numCategory: numCategory,
             dataCategoryYear: dataCategoryYear,
             dataBookQuarterly: dataBookQuarterly
-        }); 
-
+        })
        
     } catch (error) {
         console.error("Error occurred:", error.stack);
-        res.status(400).json({ message: 'Error fetching books', error });
     }
 });
 
