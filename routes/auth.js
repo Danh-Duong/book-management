@@ -5,18 +5,23 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 router.get("/login", (req, res) => {
-    return res.render("login", {error: null})
+    return res.render("login", {error: null, username: null, password: null})
 })
 router.post("/login", async(req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
 
     if (!user)
-        return res.render("login", {error: "Username or pasword is incorrect"})
+        return res.render("login", { error: "Username or pasword is incorrect",
+            username: username,
+            password: password
+        })
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-        return res.render("login", {error: "Username or pasword is incorrect"})
+        return res.render("login", {error: "Username or pasword is incorrect",
+            username: username,
+            password: password})
 
     const token = jwt.sign(
         { username: user.username, id: user._id },

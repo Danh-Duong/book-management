@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const { Book } = require("../db")
+const { Book, Author, Category } = require("../db")
 const cloudinary = require("../cloudinary-config")
 const multer = require("multer")
 const { CloudinaryStorage } = require("multer-storage-cloudinary")
@@ -20,9 +20,8 @@ const upload = multer({ storage: storage})
 router.get("/", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;  
-        const limit = parseInt(req.query.limit) || 10; 
-        const bookId = req.query.bookId;
-        const name = req.query.name;
+        const limit = parseInt(req.query.limit) || 5; 
+        const valueSearch = req.query.valueSearch;
         const minPrice = parseFloat(req.query.minPrice) || 0;
         const maxPrice = parseFloat(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
         const id_category = req.query.id_category;
@@ -30,31 +29,44 @@ router.get("/", async (req, res) => {
         const isEnable = (req.query.isEnable ?? "true") === "true";
 
         const filter = {isEnable}
-        if (bookId) filter.id = bookId;
-        if (name) filter.name = new RegExp(name, 'i');    
+        if (valueSearch){
+            filter.$or = [
+                { id: valueSearch },
+                { name: new RegExp(valueSearch, 'i') }
+            ];
+        }  
         filter.price = {};
         filter.price.$gte = minPrice;
         filter.price.$lte = maxPrice;
-        if (id_category) filter.id_category = id_category;
-        if (id_author) filter.id_author = id_author;
+        if (id_category && id_category!=='') filter.id_category = id_category;
+        if (id_author && id_author!=='') filter.id_author = id_author;
 
         const skip = (page - 1) * limit;
+
         const books = await Book.find(filter) 
             .skip(skip)
             .limit(limit);
-
+        
         const totalBooks = await Book.countDocuments(filter);
         const totalPages = Math.ceil(totalBooks / limit);
+        const authors = await Author.find({isEnable: true})
+        const categories = await Category.find({isEnable: true})
 
-        res.status(200).json({
+        res.render("admin/manage_book",{
             currentPage: page,
             totalPages: totalPages,
-            totalBooks: totalBooks,
-            books: books
-        });
+            totalItems: totalBooks,
+            books: books,
+            valueSearch: valueSearch,
+            minPrice: minPrice === 0 ? '': minPrice,
+            maxPrice: maxPrice === Number.MAX_SAFE_INTEGER ? '':  maxPrice,
+            id_author: id_author,
+            id_category: id_category,
+            authors: authors,
+            categories: categories
+        })
     } catch (error) {
         console.error("Error occurred:", error.stack);
-        res.status(400).json({ message: 'Error fetching books', error });
     }
 });
 
