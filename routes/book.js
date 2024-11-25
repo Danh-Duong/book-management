@@ -16,6 +16,19 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage})
 
+router.get("/id/:id", async(req,res)=>{
+    const bookId = req.params.id
+    const book = await Book.findOne({id: bookId});
+    const category = await Category.findOne({ id: book.id_category });
+    const author = await Author.findOne({ id: book.id_author });
+    const data = {
+        ...book.toObject(),
+        category,
+        author,
+    }
+    res.json(data)
+})
+
 // get book page filter
 router.get("/", async (req, res) => {
     try {
