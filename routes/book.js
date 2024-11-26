@@ -86,7 +86,26 @@ router.get("/", async (req, res) => {
 router.use(authenticateToken);
 
 // show form create book
-router.get("/create", (req, res) => res.render(''))
+router.get("/create", async (req, res) => {
+    const categories = await Category.find({})
+    const authors = await Author.find({})
+    res.render('admin/save_book',
+        {
+            error: null, 
+            categories: categories,
+            authors: authors, 
+            data: {
+                id: "",
+                desc: "",
+                numb: "",
+                price: "",
+                publisher: "",
+                yearPublication: "",
+                id_category: "",
+                id_author: "",
+            }  
+        }
+    )})
 
 // show form update book
 router.get("update/:id", async(req, res) => {
@@ -106,14 +125,24 @@ router.get("update/:id", async(req, res) => {
 // create new book
 router.post("/store", upload.single('image'),async(req, res) => {
     try{
+        const existedBook = Book.find({ id: req.body.id})
+        const categories = await Category.find({})
+        const authors = await Author.find({})
+        if (existedBook){
+            return res.render("admin/save_book", { error: "ID đã tồn tại!", 
+                data: req.body,
+                categories: categories,
+                authors: authors,
+                action: 'add', })
+        }
         const bookData = {
             ...req.body,
             imgUrl: req.file.path,
             isEnable : true
         }
         const book =  new Book(bookData)
-        const result = await book.save()
-        res.status(200).json(result);
+        await book.save()
+        return res.redirect("/admin/books")
     }
     catch (error){
         res.status(400).json({ message: 'Error creating book', error })

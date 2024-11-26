@@ -29,6 +29,11 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style_admin.css" rel="stylesheet">
+    <style scoped>
+        select{
+            padding: 16px 12px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -58,30 +63,34 @@
                         <div class="col-8 mx-auto">
                             <div class="bg-light rounded shadow h-100 p-4">
                                 <h6 class="mb-4 text-uppercase ">Add a new book</h6>
-                                <form action="#" method="get">
+                                <form action="/admin/books/store" method="post" enctype="multipart/form-data">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="floatingInput" placeholder="id" required
+                                            name="id" value="<%= data.id %>">
+                                        <label for="floatingInput">ID</label>
+                                    </div>
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="floatingInput" placeholder="name"
-                                            name="name">
+                                            name="name" required value="<%= data.name %>">
                                         <label for="floatingInput">Name</label>
                                     </div>
 
                                     <div class="row justify-content-between">
                                         <div class="col-6">
-                                            <select class="form-select mb-3" aria-label="Default select example"
-                                                name="id_category">
-                                                <option selected>Category</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                            <select class="form-select mb-3" aria-label="Default select example" name="id_category">
+                                                <option value="" disabled selected>Category</option>
+                                                <% categories.forEach(function(item) { %>
+                                                    <option value="<%= item.id %>" <%=data.id_category === item.id ? 'selected' : '' %>><%= item.name %></option>
+                                                <% }) %>
                                             </select>
                                         </div>
                                         <div class="col-6">
                                             <select class="form-select mb-3" aria-label="Default select example"
                                                 name="id_author">
                                                 <option selected>Author</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                <% authors.forEach(function(item, index) { %>
+                                                    <option value="<%= item.id %>" <%=data.id_author === item.id ? 'selected' : '' %>><%= item.name %></option>
+                                                <% }) %>
                                             </select>
                                         </div>
                                     </div>
@@ -90,14 +99,14 @@
                                         <div class="col-6">
                                             <div class="form-floating mb-3">
                                                 <input type="number" class="form-control" id="floatingPassword"
-                                                    placeholder="Number" name="number">
+                                                    placeholder="Number" name="number" value="<%= data.number %>">
                                                 <label for="floatingPassword">Number</label>
                                             </div>
                                         </div>
                                         <div class="col-6 ">
                                             <div class="form-floating mb-3">
                                                 <input type="number" class="form-control" id="floatingPassword"
-                                                    placeholder="Price" name="price">
+                                                    placeholder="Price" name="price" value="<%= data.price %>">
                                                 <label for="floatingPassword">Price</label>
                                             </div>
                                         </div>
@@ -107,72 +116,109 @@
                                         <div class="col-6">
                                             <div class="form-floating mb-3">
                                                 <input type="number" class="form-control" id="floatingPassword"
-                                                    placeholder="Year publication" name="yearPublication">
+                                                    placeholder="Year publication" name="yearPublication" value="<%= data.yearPublication %>">
                                                 <label for="floatingPassword">Year publication</label>
                                             </div>
                                         </div>
-                                        <div class="col-6 ">
-                                            <div class="form-floating mb-3">
-                                                <input type="date" class="form-control" id="floatingPassword"
-                                                    placeholder="Create at" name="createAt">
-                                                <label for="floatingPassword">Create at</label>
+                                    </div>
+
+                                    <!-- <% if (data.imgUrl==='') {%>
+                                        <div>
+                                            <img src="<%= data.imgUrl%>" alt="Book Image">
+                                        </div>
+                                    <%}%> -->
+
+                                    <!-- <div class="row justify-content-between align-items-center">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="formFile" class="form-label">Select image</label>
+                                                <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+                                            </div>
+                                            <div id="imagePreviewContainer" style="display: none;">
+                                                <img id="imagePreview" src="" alt="Image Preview" class="img-fluid mb-3" style="max-height: 200px;">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>    
+                                    
+                                    -->
 
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="isEnable"
-                                                    id="gridRadios1" value="option1" checked>
-                                                <label class="form-check-label" for="gridRadios1">
-                                                    Active
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="isEnable"
-                                                    id="gridRadios2" value="option2">
-                                                <label class="form-check-label" for="gridRadios2">
-                                                    Inactive
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 ">
                                             <div class="mb-3">
                                                 <label for="formFile" class="form-label">Select image</label>
-                                                <input class="form-control" type="file" id="formFile">
+                                                <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+                                            </div>
+                                            <div id="imagePreviewContainer" style="<%= data.imgUrl ? '' : 'display: none;' %>">
+                                                <img id="imagePreview" 
+                                                     src="<%= data.imgUrl || '' %>" 
+                                                     alt="Image Preview" 
+                                                     class="img-fluid mb-3" 
+                                                     style="max-height: 200px;">
                                             </div>
                                         </div>
                                     </div>
 
+
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="floatingPassword"
-                                            placeholder="Publisher">
+                                            placeholder="Publisher" name="publisher" value="<%= data.publisher %>">
                                         <label for="floatingPassword">Publisher</label>
                                     </div>
 
                                     <div class="form-floating">
                                         <textarea class="form-control" placeholder="Write something..."
-                                            id="floatingTextarea" style="height: 150px;" name="desc"></textarea>
+                                            id="floatingTextarea" style="height: 150px;" name="desc"><%= data.desc %></textarea>
                                         <label for="floatingTextarea">Description</label>
                                     </div>
-                                    <button class="btn btn-danger text-white text-uppercase w-100 mt-3" type="button">Submit</button>
+                                    <% if(error){ %>
+                                        <p style="color: rgb(201, 25, 25); font-weight: 700; margin-top: 10px; margin-bottom: 0px;"><%= error%></p>
+                                    <%} %>
+                                    <button class="btn btn-danger text-white text-uppercase w-100 mt-3" type="submit">Submit</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Form End -->
-
-
-
-
             </div>
             <!-- Content End -->
-
-
-
     </div>
+
+    <script>
+        // function previewImage(event) {
+        //     const fileInput = event.target;
+        //     const previewContainer = document.getElementById("imagePreviewContainer");
+        //     const previewImage = document.getElementById("imagePreview");
+
+        //     if (fileInput.files && fileInput.files[0]) {
+        //         const reader = new FileReader();
+        //         reader.onload = function (e) {
+        //             previewImage.src = e.target.result;
+        //             previewContainer.style.display = "block"; // Hiển thị ảnh khi chọn file
+        //         };
+        //         reader.readAsDataURL(fileInput.files[0]);
+        //     } else {
+        //         previewContainer.style.display = "none"; // Ẩn ảnh nếu không có file nào được chọn
+        //         previewImage.src = "";
+        //     }
+        // }
+
+        function previewImage(event) {
+            const fileInput = event.target;
+            const previewContainer = document.getElementById("imagePreviewContainer");
+            const previewImage = document.getElementById("imagePreview");
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result; // Thay đổi ảnh trong thẻ <img>
+                    previewContainer.style.display = "block"; // Hiển thị ảnh
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
