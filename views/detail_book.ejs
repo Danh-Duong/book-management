@@ -35,7 +35,7 @@
                     <div class="col-md-6 mt-5">
                         <figure class="product-thumb">
                             <!-- <img src="/images/main-banner1.jpg" class="single-image"> -->
-                            <img src="<%= data.imgUrl%>" class="single-image" style="width: 395px;">
+                            <img src="<%= data.imgUrl%>" class="single-image" style="width: 395px; border-radius: 10px;">
                         </figure>
                     </div>
 
@@ -91,7 +91,7 @@
                     <div class="inner-content">
                         <div class="product-list" data-aos="fade-up">
                             <div class="grid product-grid">
-                                <div class="product-item">
+                                <!-- <div class="product-item">
                                     <figure class="product-style">
                                         <img src="images/product-item5.jpg" alt="Books" class="product-item">
                                         <button type="button" class="add-to-cart" data-product-tile="add-to-cart">More
@@ -102,9 +102,26 @@
                                         <span>title:Simple way of piece life</span>
 
                                 </div>
-                                </figcaption>
+                                </figcaption> -->
 
-                                <!-- the second product - item -->
+                                <% relatedBooks.forEach(function(item, index) { %>
+                                    <div class="product-item">
+                                        <figure class="product-style">
+                                            <img src="<%= item.imgUrl %>" alt="Books" class="product-item">
+                                            <a href="/books/<%= item.id%>"><button type="button" class="add-to-cart" data-product-tile="add-to-cart">
+                                                More Detail</button></a>
+                                        </figure>
+                                        <figcaption>
+                                            <h3><%= item.name %></h3>
+                                            <span>$<%= item.price %></span>
+    
+                                    </div>
+                                    </figcaption>
+                                <% }) %>
+
+                                
+
+                                
                             </div>
                         </div><!--grid-->
                     </div>

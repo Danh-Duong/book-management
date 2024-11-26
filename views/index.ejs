@@ -19,7 +19,11 @@
     <link rel="stylesheet" type="text/css" href="/icomoon/icomoon.css">
     <link rel="stylesheet" type="text/css" href="/css/vendor.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-
+    <style scoped>
+        a:hover {
+            color: #eaeaea !important;
+        }
+    </style>
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
@@ -37,30 +41,19 @@
                         </button>
 
                         <div class="main-slider pattern-overlay">
-                            <div class="slider-item">
-                                <div class="banner-content">
-                                    <h2 class="banner-title" name="name">Life of the Wild</h2>
-                                    <p name="desc">Description</p>
-                                    <div class="btn-wrap">
-                                        <a href="/detail-book" class="btn btn-outline-accent btn-accent-arrow">Read
-                                            More<i class="icon icon-ns-arrow-right"></i></a>
+                            <% books.forEach(function(item, index) { %>
+                                <div class="slider-item">
+                                    <div class="banner-content">
+                                        <h2 class="banner-title" name="name"><%= item.name %></h2>
+                                        <p name="desc"><%= item.desc %></p>
+                                        <div class="btn-wrap">
+                                            <a href="/books/<%= item.id%>" class="btn btn-outline-accent btn-accent-arrow">Read
+                                                More<i class="icon icon-ns-arrow-right"></i></a>
+                                        </div>
                                     </div>
-                                </div><!--banner-content-->
-                                <img src="/images/main-banner1.jpg" alt="banner" class="banner-image" name="imgUrl">
-                            </div><!--slider-item-->
-
-                            <div class="slider-item">
-                                <div class="banner-content">
-                                    <h2 class="banner-title">Birds gonna be Happy</h2>
-                                    <p>Description.</p>
-                                    <div class="btn-wrap">
-                                        <a href="/detail-book" class="btn btn-outline-accent btn-accent-arrow">Read
-                                            More<i class="icon icon-ns-arrow-right"></i></a>
-                                    </div>
-                                </div><!--banner-content-->
-                                <img src="/images/main-banner2.jpg" alt="banner" class="banner-image">
-                            </div><!--slider-item-->
-
+                                    <img src="<%= item.imgUrl %>" style="width: 413px; border-radius: 10px;" alt="banner" class="banner-image" name="imgUrl">
+                                </div>
+                            <% })%>
                         </div><!--slider-->
 
                         <button class="next slick-arrow">
@@ -105,21 +98,23 @@
 
                         <div class="product-list" data-aos="fade-up">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="product-item">
-                                        <figure class="product-style">
-                                            <img src="images/product-item1.jpg" alt="Books" class="product-item"
-                                                name="imgUrl">
-                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart"><a
-                                                    href="/detail-book">More Detail</a></button>
-                                        </figure>
-                                        <figcaption>
-                                            <h3 name="name">title:Simple way of piece life</h3>
-                                            <span name="id-author">author:Armor Ramsey</span>
-                                            <div class="item-price" name="price">price:$ 40.00</div>
-                                        </figcaption>
+                                <% books.forEach(function(item, index) { %>
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style" style="height: 405px; box-sizing: border-box;">
+                                                <img src="<%= item.imgUrl%>" alt="Books" class="product-item"
+                                                    name="imgUrl">
+                                                <button type="button" class="add-to-cart" data-product-tile="add-to-cart"><a
+                                                        href="/books/<%= item.id%>">More Detail</a></button>
+                                            </figure>
+                                            <figcaption>
+                                                <h3 name="name"><%= item.name%></h3>
+                                                <span name="id-author"><%= item.publisher%></span>
+                                                <div class="item-price" name="price">$<%= item.price%></div>
+                                            </figcaption>
+                                        </div>
                                     </div>
-                                </div>
+                                <% }) %>
 
 
 
@@ -181,59 +176,6 @@
             </div>
         </section>
 
-        <section id="popular-books" class="bookshelf py-5 my-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="section-header align-center">
-                            <div class="title">
-                                <span>Some quality items</span>
-                            </div>
-                            <h2 class="section-title">Popular Books</h2>
-                        </div>
-
-                        <ul class="tabs">
-                            <li data-tab-target="#all-genre" class="active tab">All Genre</li>
-                            <li data-tab-target="#business" class="tab" name="name">Business</li>
-                            <!-- category -->
-                        </ul>
-
-                        <div class="tab-content">
-                            <div id="all-genre" data-tab-content class="active">
-                                <div class="row">
-
-                                    <div class="col-md-3">
-                                        <div class="product-item">
-                                            <figure class="product-style">
-                                                <img src="images/tab-item1.jpg" alt="Books" class="product-item"
-                                                    name="imgUrl">
-                                                <button type="button" class="add-to-cart"
-                                                    data-product-tile="/detail-book">More Detail</button>
-                                            </figure>
-                                            <figcaption>
-                                                <h3 name="name">title:Portrait photography</h3>
-                                                <span name="id-author">author:Adam Silber</span>
-                                                <div class="item-price" name="price">price:$ 40.00</div>
-                                            </figcaption>
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-                    </div><!--inner-tabs-->
-
-                </div>
-            </div>
-        </section>
 
         <section id="quotation" class="align-center pb-5 mb-5">
             <div class="inner-content">
