@@ -16,6 +16,8 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage})
 
+router.use(authenticateToken);
+
 router.get("/id/:id", async(req,res)=>{
     const bookId = req.params.id
     const book = await Book.findOne({id: bookId});
@@ -26,7 +28,7 @@ router.get("/id/:id", async(req,res)=>{
         category,
         author,
     }
-    res.json(data)
+    return res.render("admin/detail_book_admin", {data: data})
 })
 
 // get book page filter
@@ -82,8 +84,6 @@ router.get("/", async (req, res) => {
         console.error("Error occurred:", error.stack);
     }
 });
-
-router.use(authenticateToken);
 
 // show form create book
 router.get("/create", async (req, res) => {

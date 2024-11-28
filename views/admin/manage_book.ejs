@@ -164,7 +164,11 @@
                                                     <td><%= item.price %>$</td>
                                                     <td><%= item.publisher %></td>
                                                     <td><p class="active">Active</p></td>
-                                                    <td><a href="books/update/<%= item.id %>" class="btn btn-primary btn-sm"> <i
+                                                    <td>
+                                                        <a href="books/id/<%= item.id %>" class="btn btn-info btn-sm"> 
+                                                            <i class="fa-solid fa-eye" style="color: white;"></i>
+                                                        </a>
+                                                        <a href="books/update/<%= item.id %>" class="btn btn-primary btn-sm"> <i
                                                                 class="fa-solid fa-pen-to-square"></i>
                                                         </a> <a href="books/delete/<%= item.id %>" class="btn btn-danger btn-sm"
                                                             onclick="return confirmDelete(event, '<%= item.id %>')"> <i

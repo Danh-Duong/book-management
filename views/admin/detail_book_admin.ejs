@@ -29,6 +29,16 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style_admin.css" rel="stylesheet">
+    <style scoped>
+        .active{
+            background-color: green; 
+            color: white; 
+            padding: 4px 10px;
+            margin-left: 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,34 +59,32 @@
                     </div>
                 </div>
 
-
-
-
                 <!-- Form Start -->
-                <div class="container-fluid d-flex justify-content-center mt-5 mb-5" style="min-height: 100vh;">
+                <div class="container-fluid d-flex justify-content-center mt-4 mb-5" style="min-height: 100vh;">
                     <div class="row w-100">
                         <div class="col-12 mx-auto">
                             <div class="bg-light rounded shadow h-100 p-4">
                                 <h6 class="mb-4 text-uppercase ">Detail book</h6>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <h4 class="section-title divider mt-5">title</h4>
-                                        <div class="product-content">
-                                            <p><strong>Description:</strong> description</p>
-                                            <p><strong>Price:</strong> price</p>
-                                            <p><strong>Publisher:</strong> Publisher</p>
-                                            <p><strong>Number:</strong> Number</p>
-                                            <p><strong>Year of Publication:</strong> YoP</p>
+                                    <div class="col-md-6 position-relative">
+                                        <h4 class="section-title divider mt-5"><%= data.name %></h4>
+                                        <hr>
+                                        <div class="product-content ps-3">
+                                            <p><strong>Description:</strong> <%= data.desc %></p>
+                                            <p><strong>Price:</strong> $<%= data.price %></p>
+                                            <p><strong>Publisher:</strong> <%= data.publisher %></p>
+                                            <p><strong>Number:</strong> <%= data.numb %></p>
+                                            <p><strong>Year of Publication:</strong> <%= data.yearPublication %></p>
 
-                                            <p><strong>Author:</strong> name</p>
-                                            <p><strong>Category:</strong> category</p>
-                                            <p><strong>Created At:</strong>created at</p>
-
+                                            <p><strong>Author:</strong> <%= data.author.name %></p>
+                                            <p><strong>Category:</strong> <%= data.category.name %></p>
+                                            <p><strong>Status:</strong><span class="active">Active</span></p>
                                         </div>
+                                        <button class="position-absolute btn btn-primary" onclick="window.location.href='/admin/books'" style="bottom: 10px; left: 20px;">Back</button>
+                                        
                                     </div>
                                     <div class="col-md-6">
-                                        <img src="/images/main-banner1.jpg" class="single-image">
-
+                                        <img src="<%= data.imgUrl%>" class="single-image" style="width: 395px; border-radius: 14px;">
                                     </div>
                                 </div>
                             </div>
@@ -84,10 +92,6 @@
                     </div>
                 </div>
                 <!-- Form End -->
-
-
-
-
             </div>
             <!-- Content End -->
 

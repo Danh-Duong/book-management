@@ -39,7 +39,7 @@ router.post("/login", async(req, res) => {
 
 router.get("/logout", async(req, res) => {
     res.clearCookie('authToken');
-    res.status(200).json({ message: 'Logout successful' });
+    res.redirect("/")
 })
 
 module.exports = router
