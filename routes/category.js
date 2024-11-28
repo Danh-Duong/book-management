@@ -101,7 +101,7 @@ router.post("/save/:id", async(req, res) => {
     try{
         const updatedCategory = await Category.findOneAndUpdate({id: req.params.id}, req.body, {new : true})
         if (!updatedCategory) {
-            return res.render("admin/manage_category", {error: "Không thể cập nhập Category"})
+            return res.render("admin/manage_category", {error: "Không thể cập nhập thông tin danh mục"})
         }
         return res.redirect("/admin/categories")
     }
@@ -120,7 +120,7 @@ router.get("/delete/:id", async (req, res) => {
         );
 
         if (!deletedCategory) {
-            return res.render("admin/manage_category", {error: "Không thể xóa Category"})
+            return res.render("admin/manage_category", {error: "Không thể xóa thông tin danh mục"})
         }
 
         return res.redirect("/admin/categories")

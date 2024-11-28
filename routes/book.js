@@ -55,17 +55,17 @@ router.get("/", async (req, res) => {
         if (id_author && id_author!=='') filter.id_author = id_author;
 
         const skip = (page - 1) * limit;
-
         const books = await Book.find(filter) 
             .skip(skip)
             .limit(limit);
-        
+                
         const totalBooks = await Book.countDocuments(filter);
         const totalPages = Math.ceil(totalBooks / limit);
         const authors = await Author.find({isEnable: true})
         const categories = await Category.find({isEnable: true})
 
         res.render("admin/manage_book",{
+            limit: limit,
             currentPage: page,
             totalPages: totalPages,
             totalItems: totalBooks,
@@ -87,13 +87,14 @@ router.use(authenticateToken);
 
 // show form create book
 router.get("/create", async (req, res) => {
-    const categories = await Category.find({})
-    const authors = await Author.find({})
+    const categories = await Category.find({isEnable: true})
+    const authors = await Author.find({isEnable: true})
     res.render('admin/save_book',
         {
             error: null, 
             categories: categories,
             authors: authors, 
+            action: "add",
             data: {
                 id: "",
                 desc: "",
@@ -108,16 +109,24 @@ router.get("/create", async (req, res) => {
     )})
 
 // show form update book
-router.get("update/:id", async(req, res) => {
+router.get("/update/:id", async(req, res) => {
     try{
         const bookId = req.params.id
         const book = await Book.findOne({ id: bookId , isEnable: true});
+        const categories = await Category.find({isEnable: true})
+        const authors = await Author.find({isEnable: true})
         if (book) {
-            res.status(200).json(book);
-        } else {
-            res.status(404).json({ message: 'Book not found' });
-        }
-    } catch (error) {
+            res.render('admin/save_book',
+                {
+                    error: null, 
+                    categories: categories,
+                    authors: authors, 
+                    data: book,
+                    action: ""
+                }
+        )}
+        } 
+    catch (error) {
         res.status(400).json({ message: 'Fail to get book', error });
     }
 })
@@ -125,43 +134,49 @@ router.get("update/:id", async(req, res) => {
 // create new book
 router.post("/store", upload.single('image'),async(req, res) => {
     try{
-        const existedBook = Book.find({ id: req.body.id})
-        const categories = await Category.find({})
-        const authors = await Author.find({})
+        const existedBook = await Book.findOne({ id: req.body.id})
+        const categories = await Category.find({ isEnable: true})
+        const authors = await Author.find({isEnable: true})
         if (existedBook){
             return res.render("admin/save_book", { error: "ID đã tồn tại!", 
                 data: req.body,
                 categories: categories,
                 authors: authors,
-                action: 'add', })
+                action: "add"
+            })
         }
+
         const bookData = {
             ...req.body,
-            imgUrl: req.file.path,
+            imgUrl: req?.file?.path,
             isEnable : true
         }
-        const book =  new Book(bookData)
+        
+        const book = new Book(bookData)
         await book.save()
         return res.redirect("/admin/books")
     }
     catch (error){
-        res.status(400).json({ message: 'Error creating book', error })
+        console.error('Error creating book:', error.stack);
+        res.status(400).json({ message: 'Error creating book', error: error.message }); 
     }
 })
 
 // update book
-router.put("/save/:id", upload.single('image'),async(req, res) => {
+router.post("/save/:id", upload.single('image'),async(req, res) => {
     try{
         const updatedData  = {
             ...req.body,
-            imgUrl: req.file ? req.file.path : req.body.imgUrl
+        }
+        if (req.file) {
+            updatedData.imgUrl = req.file.path;
         }
         const updatedBook = await Book.findOneAndUpdate({id: req.params.id}, updatedData, {new : true})
 
         if (!updatedBook) {
-            return res.status(404).send({ message: 'Book not found' });
+            return res.render("admin/manage_book", {error: "Không thể cập nhập thông tin sách"})
         }
-        res.status(200).json(updatedBook);
+        return res.redirect("/admin/books")
     }
     catch (error){
         res.status(400).json({ message: 'Error updating book', error })
@@ -169,22 +184,14 @@ router.put("/save/:id", upload.single('image'),async(req, res) => {
 })
 
 // delete book
-router.delete("/delete/:id", async (req, res) => {
+router.get("/delete/:id", async (req, res) => {
     try {
-        const deletedBook = await Book.findOneAndUpdate(
+        await Book.findOneAndUpdate(
             { id: req.params.id },
             { isEnable: false },   
             { new: true }    
         );
-
-        if (!deletedBook) {
-            return res.status(404).send({ message: 'Book not found' });
-        }
-
-        res.status(200).json({
-            message: 'Book marked as disabled (isEnable: false)',
-            updatedBook
-        });
+        res.redirect("/admin/books")
     } catch (error) {
         res.status(400).json({ message: 'Error deleting book', error });
     }
