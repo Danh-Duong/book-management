@@ -20,61 +20,87 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="/css/style_admin.css" rel="stylesheet">
-    
+
     <style>
-        .modal.show {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            z-index: 0;
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8f9fa;
         }
 
-        .modal-backdrop {
-            display: block !important; /* Ensures the backdrop stays visible */
+        .container-xxl {
+            background-color: #fff;
         }
 
-        .modal-dialog-centered {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
+        .content {
+            padding: 30px;
+        }
+
+        .form-floating input,
+        .form-floating select,
+        .form-floating textarea {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+        }
+
+        .form-floating label {
+            font-weight: bold;
+        }
+
+        .form-group button {
+            background-color: #ff9f00;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .form-group button:hover {
+            background-color: #e68900;
+        }
+
+        .form-group button:focus {
+            outline: none;
         }
 
         .modal-content {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            top: 75px;
+            border-radius: 8px;
         }
 
-        .modal-dialog {
-            margin-top: -50px !important; 
-            margin-bottom: 0 !important; 
+        .modal-footer {
+            border-top: none;
+            padding: 0;
         }
 
-        .modal-footer{
-            border-top: none !important;
-            padding: 0 !important;
-            padding-bottom: 10px !important;
-
+        .bg-light {
+            background-color: #f7f7f7 !important;
         }
 
-        .modal-footer button{
-            border: none;
-            border-radius: 5px;
+        .rounded {
+            border-radius: 10px;
         }
 
-        textarea {
-            height: 120px !important;
-            resize: vertical !important; 
+        .shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: rgb(172, 37, 37);
+            font-weight: bold;
+            margin-left: 2px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -83,116 +109,98 @@
 
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <%- include('./view_base') %>
-            <!-- Content Start -->
-            <div class="content">
-
-                <div class="col-12">
-                    <div class="bg-light d-flex align-items-center justify-content-between p-2">
-                        <div class="ms-3">
-                            <a href="#" class="sidebar-toggler flex-shrink-0 fa-2x">
-                                <i class="fa fa-bars"></i>
-                            </a>
-                            <span class="p-2">Manage author</span>
-                        </div>
+        <!-- Content Start -->
+        <div class="content">
+            <div class="col-12">
+                <div class="bg-light d-flex align-items-center justify-content-between p-2">
+                    <div class="ms-3">
+                        <a href="#" class="sidebar-toggler flex-shrink-0 fa-2x">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <span class="p-2">Manage author</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Table Start -->
-                <div class="container-fluid pt-4">
-                    <div class="modal show" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <h4 class="text-center pb-1">Save Author</h4>
-                                    <form action="<%=action === 'add' ? 'store' : '/admin/authors/save/' + data.id %>" method="post">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="floatingInput" placeholder="Id" required
-                                                name="id" value="<%= data.id %>" <%= action === 'add' ? '' : 'disabled' %>>
-                                            <label for="floatingInput">ID</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="floatingInput"
-                                                placeholder="Name" name="name" required value="<%= data.name %>">
-                                            <label for="floatingInput">Name</label>
-                                        </div>
-<!-- 
-                                        <div class="form-floating mb-3">
-                                            <select class="form-control" id="floatingSelect" name="nationality" aria-label="Select Nationality">
-                                                <option selected disabled>Select Nationality</option>
-                                                <option value="VN">Việt Nam</option>
-                                                <option value="US">United States</option>
-                                                <option value="UK">United Kingdom</option>
-                                                <option value="IN">India</option>
-                                                <option value="JP">Japan</option>
-                                            </select>
-                                            <label for="floatingSelect">Nationality</label>
-                                        </div> -->
-
-                                        <div class="form-floating mb-3">
-                                            <select class="form-control" id="floatingSelect" name="nationality" aria-label="Select Nationality" style="background-color: #fff;">
-                                                <option disabled <%= !data.nationality ? 'selected' : '' %>>Select Nationality</option>
-                                                <option value="Việt Nam" <%= data.nationality === 'Việt Nam' ? 'selected' : '' %>>Việt Nam</option>
-                                                <option value="American" <%= data.nationality === 'American' ? 'selected' : '' %>>American</option>
-                                                <option value="British" <%= data.nationality === 'British' ? 'selected' : '' %>>British</option>
-                                                <option value="Russian" <%= data.nationality === 'Russian' ? 'selected' : '' %>>Russian</option>
-                                                <option value="China" <%= data.nationality === 'China' ? 'selected' : '' %>>China</option>
-                                            </select>
-                                            <label for="floatingSelect">Nationality</label>
-                                        </div>
-                                        
-
-                                        <div class="form-floating mb-3">
-                                            <input type="date" class="form-control" id="floatingInput"
-                                                placeholder="birthDate" name="birthDate" required value="<%= data.birthDate %>">
-                                            <label for="floatingInput">BirthDate</label>
-                                        </div>
-                                        
-                                        <div class="form-floating mb-3">
-                                            <textarea type="text" class="form-control" rows="3" id="floatingInput"
-                                                placeholder="Description" name="desc"><%= data.desc %></textarea>
-                                            <label for="floatingInput">Description</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <textarea type="text" class="form-control" rows="3" id="floatingInput"
-                                                placeholder="bio" name="bio"><%= data.bio %></textarea>
-                                            <label for="floatingInput">Bio</label>
-                                        </div>
-
-                                        <% if (error) { %>
-                                            <p style="color: rgb(172, 37, 37); font-weight: bold; margin-left: 2px;">
-                                                <%= error %>
-                                            </p>
-                                        <% } %>
-
-                                        <div class="modal-footer">
-                                            <button style="color: white; padding: 10px 0 !important;" type="submit" class="btn btn-warning border-2 w-100">Save</button>
-                                        </div>
-                                    </form>
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 d-flex justify-content-center">
+                <div class="row w-100">
+                    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                        <div class="bg-light rounded shadow h-100 p-4">
+                            <h4 class="text-center pb-1">Save Author</h4>
+                            <form action="<%= action === 'add' ? 'store' : '/admin/authors/save/' + data.id %>" method="post">
+                                <!-- ID Input -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Id" required
+                                        name="id" value="<%= data.id %>" <%= action === 'add' ? '' : 'disabled' %>>
+                                    <label for="floatingInput">ID</label>
                                 </div>
 
-                            </div>
+                                <!-- Name Input -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Name"
+                                        name="name" required value="<%= data.name %>">
+                                    <label for="floatingInput">Name</label>
+                                </div>
+
+                                <!-- Nationality Dropdown -->
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="floatingSelect" name="nationality" aria-label="Select Nationality">
+                                        <option disabled <%= !data.nationality ? 'selected' : '' %>>Select Nationality</option>
+                                        <option value="Việt Nam" <%= data.nationality === 'Việt Nam' ? 'selected' : '' %>>Việt Nam</option>
+                                        <option value="American" <%= data.nationality === 'American' ? 'selected' : '' %>>American</option>
+                                        <option value="British" <%= data.nationality === 'British' ? 'selected' : '' %>>British</option>
+                                        <option value="Russian" <%= data.nationality === 'Russian' ? 'selected' : '' %>>Russian</option>
+                                        <option value="China" <%= data.nationality === 'China' ? 'selected' : '' %>>China</option>
+                                    </select>
+                                    <label for="floatingSelect">Nationality</label>
+                                </div>
+
+                                <!-- Birth Date Input -->
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="floatingInput" placeholder="birthDate"
+                                        name="birthDate" required value="<%= data.birthDate %>">
+                                    <label for="floatingInput">Birth Date</label>
+                                </div>
+
+                                <!-- Description Textarea -->
+                                <div class="form-floating mb-3">
+                                    <textarea type="text" class="form-control" rows="3" id="floatingInput"
+                                        placeholder="Description" name="desc"><%= data.desc %></textarea>
+                                    <label for="floatingInput">Description</label>
+                                </div>
+
+                                <!-- Bio Textarea -->
+                                <div class="form-floating mb-3">
+                                    <textarea type="text" class="form-control" rows="3" id="floatingInput"
+                                        placeholder="Bio" name="bio"><%= data.bio %></textarea>
+                                    <label for="floatingInput">Bio</label>
+                                </div>
+
+                                <!-- Error Message -->
+                                <% if (error) { %>
+                                    <p class="error-message">
+                                        <%= error %>
+                                    </p>
+                                <% } %>
+
+                                <!-- Save Button -->
+                                <div class="form-group mb-3">
+                                    <button type="submit" class="btn btn-warning w-100">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
-                    
                 </div>
-                <!-- Table End -->
             </div>
-            <!-- Content End -->
+            <!-- Form End -->
+        </div>
+        <!-- Content End -->
     </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/chart/chart.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Template Javascript -->
     <script src="/js/main.js"></script>
 </body>
 
